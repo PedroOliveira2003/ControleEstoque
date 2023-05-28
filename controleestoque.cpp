@@ -231,17 +231,19 @@ void buscaestadoaleat(struct Estado e[],int cod){
         cout<<"\n Estado não encontrado"<<endl;
     getch();
 }
-void buscaProduto(struct Produtos p[],int cod);
+void buscaProduto(struct Produtos p[],int &cod);
 void buscaFornecedor(struct Fornecedores f[],int cod);
-void leituraProdutoinc(struct Fornecedores f[],struct Produtos p[], int &contadorProdutos){ //a termina
+void leituraProdutoinc(struct Fornecedores f[],struct Produtos prodt[],struct Produtos p[], int &contadorProdutos){ //a termina
    int i = 0;
     for (int saida = 1; i < 20 && saida != 0; i++) {
         cout << "\nCodigo do Produto " << (i + 1) << ": ";
         cin >> p[i].codProduto;
-        if (p[i].codProduto > 0) {
-            int cod2;
+        int cod2;
             cod2 = p[i].codProduto;
-            buscaProduto(p, cod2);
+            buscaProduto(prodt, cod2);
+            if(cod2 == 0)
+            saida = 0;
+        if (cod2!=0) {
             cout << "Descricao: ";
             cin >> p[i].descProduto;
             cout << "Tipo Produto: ";
@@ -354,8 +356,8 @@ void buscaFornecedor(struct Fornecedores f[],int cod){
     cout<<"\nFornecedor Invalido"<<endl;
 }
 
-void buscaProduto(struct Produtos pro[],int cod){
-int inicio =0, fim =10;
+void buscaProduto(struct Produtos pro[],int &cod){
+int inicio =0, fim =20;
 int meio = (inicio +fim)/2;
 for(; fim>=inicio && cod!= pro[meio].codProduto;meio = (inicio+fim)/2){
     if(cod > pro[meio].codProduto)
@@ -365,12 +367,23 @@ for(; fim>=inicio && cod!= pro[meio].codProduto;meio = (inicio+fim)/2){
 }
 
      if(cod ==pro[meio].codProduto){
-        cout<<"\nPRODUTO JA CADASTRADO!";
+        cout<<"\nPRODUTO: "<<cod<<" JA CADASTRADO!"<<endl;
+         cod = 0;
+         system("Pause");
+
      }
 
 }
 
+void venderProduto(struct Produtos prod[]){
+  int i =0;
+  for(int saida = 1;i<20 && saida!=0;i++){
+    cout<<"\nDigite o codigo do Produto";
+    cin>>prod[i].codProduto;
 
+  }
+
+}
 
 int main(){
 struct TipoProdutos tipoprod[5]; //Struct dos Tipos Produtos
@@ -385,9 +398,9 @@ cout<<"\t\tMENU";//menu principal
 cout<<"\n----------------\n";
 cout<<"\t1- Cadastrar"<<endl;
 cout<<"\t2- Inserir"<<endl;
-cout<<"\t3- Deletar"<<endl;
+cout<<"\t3- Vender"<<endl;
 cout<<"\t4- Buscar"<<endl;
-cout<<"\t5- Sair"<<endl;
+cout<<"\t0- Sair"<<endl;
 cout<<"---------------\n";
 cout<<"\t Escolha opcao: ";
 cin>>varleitura;
@@ -403,7 +416,7 @@ switch(varleitura){
    cout<<"\t2- Fornecedor"<<endl;
    cout<<"\t3- Produto"<<endl;
    cout<<"\t4- Estado"<<endl;
-   cout<<"\t5- Sair"<<endl;
+   cout<<"\t0- Voltar"<<endl;
    cout<<"---------------\n";
    cout<<"\t Escolha opcao: ";
    int escolhaleitura;
@@ -467,21 +480,24 @@ switch(varleitura){
         system("cls");
 
    }
+   escolhaleitura = 0;
    break;
 
 
-   case 2: //Menu Busca
+   case 2: //Menu Inserir
     cout<<"Deseja Inserir qual item abaixo:"<<endl;
     cout<<"\t1- Tipo do Produto"<<endl;
     cout<<"\t2- Fornecedor"<<endl;
     cout<<"\t3- Produto"<<endl;
     cout<<"\t4- Estado"<<endl;
-    cout<<"\t5- Sair"<<endl;
+    cout<<"\t0- Voltar1"<<endl;
     cout<<"---------------\n";
     cout<<"\t Escolha opcao: ";
     int inserirdado;
     cin>>inserirdado;
+
     system("cls");
+
     switch(inserirdado){
 
     case 3:
@@ -489,11 +505,13 @@ switch(varleitura){
         int contpS, contpT,contpA;
 
         cout<<"\nLeitura do Arquivo S";
-        leituraProdutoinc(fornecedores1,produtos1,contpS);
+        leituraProdutoinc(fornecedores1,produtos1,produtosS,contpS);
         system("cls");
 
+
+
         cout<<"\nLeitura Arquivo T";
-        leituraProdutoinc(fornecedores1,produtos1,contpT);
+        leituraProdutoinc(fornecedores1,produtos1,produtosT,contpT);
         system("cls");
 
         incluirProduto(produtosS,contpS,produtosT,contpT,produtosA,contpA);
@@ -518,7 +536,21 @@ switch(varleitura){
         mostrarInclusao(fornecedoresA,contA);
         getch();
         system("cls");
+        break;
+
     }
-   }
+    inserirdado = 0;
+   break;
+
+    case 3:
+        venderProduto(produtos1);
+
+
+        getch();
+        system("cls");
+        break;
+ varleitura = 0;
+       }
+
   }
  }
