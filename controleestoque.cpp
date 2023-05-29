@@ -374,6 +374,7 @@ for(; fim>=inicio && cod!= pro[meio].codProduto;meio = (inicio+fim)/2){
      }
 
 }
+
 void buscaProdutovender(struct Produtos pro[],int &cod){
 int inicio =0, fim =20;
 int meio = (inicio +fim)/2;
@@ -465,6 +466,29 @@ for(; fim>=inicio && cod!=produto[meio].codProduto;meio = (inicio+fim)/2){
 
 
 }
+void buscaProdutoEst(struct Produtos pro[],int &cod){
+int inicio =0, fim =20;
+int meio = (inicio +fim)/2;
+for(; fim>=inicio && cod!= pro[meio].codProduto;meio = (inicio+fim)/2){
+    if(cod > pro[meio].codProduto)
+        inicio = meio +1;
+    else
+        fim = meio -1;
+}
+
+     if(cod ==pro[meio].codProduto){
+        cout<<"Descricao: "<<pro[meio].descProduto<<endl;
+        cout<<"Tipo Produto: " <<pro[meio].tipoProduto<<endl;
+        cout<<"Cod Fornecedor: " << pro[meio].codFornecedor2<<endl;
+        cout<<"Quantidade Estoque: " << pro[meio].qtdEst<<endl;
+        cout<<"Valor Unitario: " << pro[meio].valorUnitario<<endl;
+        cout<<"Valor em Estoque: " << pro[meio].qtdEst * pro[meio].valorUnitario<<endl;
+
+     }
+     else
+        cout<<"\nPRODUTO NAO CADASTRADO"<<endl;
+
+}
 
 int main(){
 struct TipoProdutos tipoprod[5]; //Struct dos Tipos Produtos
@@ -480,7 +504,7 @@ cout<<"\n----------------\n";
 cout<<"\t1- Cadastrar"<<endl;
 cout<<"\t2- Inserir"<<endl;
 cout<<"\t3- Vender"<<endl;
-cout<<"\t4- Buscar"<<endl;
+cout<<"\t4- Consultar Estoque"<<endl;
 cout<<"\t0- Sair"<<endl;
 cout<<"---------------\n";
 cout<<"\t Escolha opcao: ";
@@ -591,6 +615,7 @@ switch(varleitura){
 
 
 
+
         cout<<"\nLeitura Arquivo T";
         leituraProdutoinc(fornecedores1,produtos1,produtosT,contpT);
         system("cls");
@@ -629,6 +654,36 @@ switch(varleitura){
 
         venderProduto(fornecedores1,tipoprod,produtos1,produtosVenda, contadorVenda);
 
+
+        getch();
+        system("cls");
+        break;
+ varleitura = 0;
+
+    case 4:
+        cout<<"\t 1- BUSCAR PRODUTO:"<<endl;
+        cout<<"\t 2- BUSCAR PRODUTOS COM BAIXO ESTOQUE: "<<endl;
+        int leiturabuscada;
+        cin>>leiturabuscada;
+        system("cls");
+
+
+        switch(leiturabuscada){
+
+      case 1:
+        cout<<"\tDigite o codigo do Produto:";
+        int codprod;
+        cin>>codprod;
+        buscaProdutoEst(produtos1,codprod);
+        break;
+
+
+      case 2:
+
+        cout<<"MACACOS ME MORDAM";
+        break;
+
+        }
 
         getch();
         system("cls");
