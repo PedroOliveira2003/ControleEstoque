@@ -374,14 +374,95 @@ for(; fim>=inicio && cod!= pro[meio].codProduto;meio = (inicio+fim)/2){
      }
 
 }
+void buscaProdutovender(struct Produtos pro[],int &cod){
+int inicio =0, fim =20;
+int meio = (inicio +fim)/2;
+for(; fim>=inicio && cod!= pro[meio].codProduto;meio = (inicio+fim)/2){
+    if(cod > pro[meio].codProduto)
+        inicio = meio +1;
+    else
+        fim = meio -1;
+}
 
-void venderProduto(struct Produtos prod[]){
-  int i =0;
-  for(int saida = 1;i<20 && saida!=0;i++){
-    cout<<"\nDigite o codigo do Produto";
-    cin>>prod[i].codProduto;
+     if(cod ==pro[meio].codProduto){
+        cout<<"Descricao: "<<pro[meio].descProduto<<endl;
+        cout<<"Quantidade em estoque:"<<pro[meio].qtdEst<<endl;
+        cout<<"Valor unitario: "<<pro[meio].valorUnitario<<endl;
+
+
+     }
+
+}
+
+void buscaTipoProdutoVender(struct TipoProdutos tipo[],int &cod){
+  int inicio=0, fim =20;
+  int meio = (inicio+fim)/2;
+  for(; fim>=inicio && cod!=tipo[meio].codTipoProd;meio = (inicio+fim)/2){
+    if(cod> tipo[meio].codTipoProd)
+        inicio = meio + 1;
+    else
+        fim = meio -1;
+  }
+
+  if(cod==tipo[meio].codTipoProd){
+    cout<<"Descricao do tipo do produto: " <<tipo[meio].descTipoProd;
 
   }
+
+}
+
+void buscaVender(struct Produtos produto[],int cod,int &qtdvender);
+void venderProduto(struct Fornecedores fornecedor[],struct TipoProdutos tipo[] ,struct Produtos produto[],struct Produtos prod[],int &contadorVenda){
+
+    cout<<"\nDigite o codigo do Produto: ";
+    cin>>prod[0].codProduto;
+    if(prod[0].codProduto> 0){
+        int cod2;
+        cod2 = prod[0].codProduto;
+        buscaProdutovender(produto,cod2);
+        buscaTipoProdutoVender(tipo,cod2);
+        buscaFornecedor(fornecedor,cod2);
+        cout<<"\nQuantidade a ser vendida: ";
+        int qtdvender;
+        cin>> qtdvender;
+        buscaVender(produto,cod2,qtdvender);
+
+
+    }
+
+}
+
+void buscaVender(struct Produtos produto[],int cod,int &qtdvender){
+int inicio = 0, fim =20;
+int meio = (inicio+fim)/2;
+for(; fim>=inicio && cod!=produto[meio].codProduto;meio = (inicio+fim)/2){
+    if(cod > produto[meio].codProduto)
+        inicio = meio+1;
+    else
+        fim = meio -1;
+}
+  if(cod == produto[meio].codProduto){
+    if(qtdvender > produto[meio].qtdEst){
+        cout<<"\n VALOR MAIOR QUE O ESTOQUE";
+        system("pause");
+        fim = 21;
+
+    }
+    cout<<"\n VALOR DA VENDA R$:" << qtdvender * produto[meio].valorUnitario;
+    char conf;
+    cout<<"\nConfirme a Venda [S/N]:";
+    cin>> conf;
+    if(conf == 'S'){
+        produto[meio].qtdEst = produto[meio].qtdEst - qtdvender;
+        cout<<"\nVenda Realizada"<<endl;
+        cout<<"\nESTOQUE ATUALIZADO: "<<produto[meio].qtdEst;
+
+    }
+    else
+        cout<<"\nVenda Cancelada";
+  }
+
+
 
 }
 
@@ -490,7 +571,7 @@ switch(varleitura){
     cout<<"\t2- Fornecedor"<<endl;
     cout<<"\t3- Produto"<<endl;
     cout<<"\t4- Estado"<<endl;
-    cout<<"\t0- Voltar1"<<endl;
+    cout<<"\t0- Voltar"<<endl;
     cout<<"---------------\n";
     cout<<"\t Escolha opcao: ";
     int inserirdado;
@@ -543,7 +624,10 @@ switch(varleitura){
    break;
 
     case 3:
-        venderProduto(produtos1);
+        struct Produtos produtosVenda[5];
+        int contadorVenda;
+
+        venderProduto(fornecedores1,tipoprod,produtos1,produtosVenda, contadorVenda);
 
 
         getch();
