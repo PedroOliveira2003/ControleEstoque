@@ -489,6 +489,49 @@ for(; fim>=inicio && cod!= pro[meio].codProduto;meio = (inicio+fim)/2){
         cout<<"\nPRODUTO NAO CADASTRADO"<<endl;
 
 }
+void buscaFornecedorEst(struct Fornecedores f[],int cod);
+void buscaestoqueBaixo(struct Fornecedores f[], struct Produtos p[]){
+
+    for(int i=0;i<10;i++){
+        if(p[i].qtdEst<p[i].qtdEstMin){
+            cout<<"\n\nPRODUTO COM ESTOQUE BAIXO"<<endl;
+
+            cout<<"Cod Produto: " <<p[i].codProduto<<endl;
+            int cod2 = p[i].codProduto;
+            cout<<"Tipo Produto: " <<p[i].tipoProduto<<endl;
+            cout<<"Cod Fornecedor: "<<p[i].codFornecedor2<<endl;
+            cout<<"Qtd Estoque: "<<p[i].qtdEst<<endl;
+            cout<<"Qtd Estoque maximo: " <<p[i].qtdEstMax<<endl;
+            cout<<"Qtd a ser comprada: " <<p[i].qtdEstMax - p[i].qtdEstMin<<endl;
+            cout<<"Valor a comprar: " << (p[i].qtdEstMax - p[i].qtdEstMin) * p[i].valorUnitario<<endl;
+
+            buscaFornecedorEst(f,cod2);
+        }
+
+    }
+
+}
+
+void buscaFornecedorEst(struct Fornecedores f[],int cod){
+  int inicio = 0, fim = 10;
+  int meio = (inicio+fim)/2;
+  for(; fim>=inicio && cod!= f[meio].codFornecedor; meio = (inicio+fim)/2){
+    if(cod > f[meio].codFornecedor)
+        inicio = meio +1;
+    else
+        fim = meio -1;
+  }
+
+   if(cod == f[meio].codFornecedor){
+    cout<<"Nome Fornecedor:" <<f[meio].nomeFornecedor<<endl;
+    cout<<"Telefone: " << f[meio].telefone<<endl;
+
+   }
+  else
+    cout<<"\nFornecedor Invalido"<<endl;
+}
+
+
 
 int main(){
 struct TipoProdutos tipoprod[5]; //Struct dos Tipos Produtos
@@ -680,7 +723,9 @@ switch(varleitura){
 
       case 2:
 
-        cout<<"MACACOS ME MORDAM";
+
+
+        buscaestoqueBaixo(fornecedores1,produtos1);
         break;
 
         }
